@@ -1,0 +1,34 @@
+module ch
+
+typedef chMove
+typedef chUndoMove
+
+enum PieceType
+    CH_PAWN
+    CH_ROOK
+    CH_KNIGHT
+    CH_BISHOP
+    CH_QUEEN
+    CH_KING
+
+class Board create_only
+    array Piece position
+    bool playerWhite
+    Piece whiteKing
+    Piece blackKing
+    array chMove move
+    uint32 moveStackPos
+    array chUndoMove undoMove
+    uint32 undoMovePos
+    uint32 whiteScore
+    uint32 blackScore
+
+class Piece create_only
+    PieceType type
+    bool white
+    uint32 row
+    uint32 col
+    bool inPlay
+    bool neverMoved
+
+relationship Board Piece doubly_linked mandatory
