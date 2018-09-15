@@ -134,8 +134,8 @@ struct chBoardFields {
     uint32 *NumUndoMove;
     chUndoMove *UndoMove;
     uint32 *UndoMovePos;
-    uint32 *WhiteScore;
-    uint32 *BlackScore;
+    int32 *WhiteScore;
+    int32 *BlackScore;
     chPiece *FirstPiece;
     chPiece *LastPiece;
 };
@@ -405,10 +405,10 @@ utInlineC void chBoardSwapUndoMoves(chBoard Board, uint32 from, uint32 to, uint3
 #define chEndBoardUndoMove }}
 utInlineC uint32 chBoardGetUndoMovePos(chBoard Board) {return chBoards.UndoMovePos[chBoard2ValidIndex(Board)];}
 utInlineC void chBoardSetUndoMovePos(chBoard Board, uint32 value) {chBoards.UndoMovePos[chBoard2ValidIndex(Board)] = value;}
-utInlineC uint32 chBoardGetWhiteScore(chBoard Board) {return chBoards.WhiteScore[chBoard2ValidIndex(Board)];}
-utInlineC void chBoardSetWhiteScore(chBoard Board, uint32 value) {chBoards.WhiteScore[chBoard2ValidIndex(Board)] = value;}
-utInlineC uint32 chBoardGetBlackScore(chBoard Board) {return chBoards.BlackScore[chBoard2ValidIndex(Board)];}
-utInlineC void chBoardSetBlackScore(chBoard Board, uint32 value) {chBoards.BlackScore[chBoard2ValidIndex(Board)] = value;}
+utInlineC int32 chBoardGetWhiteScore(chBoard Board) {return chBoards.WhiteScore[chBoard2ValidIndex(Board)];}
+utInlineC void chBoardSetWhiteScore(chBoard Board, int32 value) {chBoards.WhiteScore[chBoard2ValidIndex(Board)] = value;}
+utInlineC int32 chBoardGetBlackScore(chBoard Board) {return chBoards.BlackScore[chBoard2ValidIndex(Board)];}
+utInlineC void chBoardSetBlackScore(chBoard Board, int32 value) {chBoards.BlackScore[chBoard2ValidIndex(Board)] = value;}
 utInlineC chPiece chBoardGetFirstPiece(chBoard Board) {return chBoards.FirstPiece[chBoard2ValidIndex(Board)];}
 utInlineC void chBoardSetFirstPiece(chBoard Board, chPiece value) {chBoards.FirstPiece[chBoard2ValidIndex(Board)] = value;}
 utInlineC chPiece chBoardGetLastPiece(chBoard Board) {return chBoards.LastPiece[chBoard2ValidIndex(Board)];}

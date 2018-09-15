@@ -55,8 +55,8 @@ static void allocBoards(void)
     chSetFreeBoardUndoMove(0);
     chBoards.UndoMove = utNewAInitFirst(chUndoMove, chAllocatedBoardUndoMove());
     chBoards.UndoMovePos = utNewAInitFirst(uint32, (chAllocatedBoard()));
-    chBoards.WhiteScore = utNewAInitFirst(uint32, (chAllocatedBoard()));
-    chBoards.BlackScore = utNewAInitFirst(uint32, (chAllocatedBoard()));
+    chBoards.WhiteScore = utNewAInitFirst(int32, (chAllocatedBoard()));
+    chBoards.BlackScore = utNewAInitFirst(int32, (chAllocatedBoard()));
     chBoards.FirstPiece = utNewAInitFirst(chPiece, (chAllocatedBoard()));
     chBoards.LastPiece = utNewAInitFirst(chPiece, (chAllocatedBoard()));
 }
@@ -948,7 +948,7 @@ void chDatabaseStart(void)
     if(!utInitialized()) {
         utStart();
     }
-    chRootData.hash = 0xae8e4ab9;
+    chRootData.hash = 0x83eb0015;
     chModuleID = utRegisterModule("ch", false, chHash(), 2, 27, 1, sizeof(struct chRootType_),
         &chRootData, chDatabaseStart, chDatabaseStop);
     utRegisterEnum("PieceType", 6);
@@ -986,8 +986,8 @@ void chDatabaseStart(void)
     utRegisterArray(&chRootData.usedBoardUndoMove, &chRootData.allocatedBoardUndoMove,
         getBoardUndoMoves, allocBoardUndoMoves, chCompactBoardUndoMoves);
     utRegisterField("UndoMovePos", &chBoards.UndoMovePos, sizeof(uint32), UT_UINT, NULL);
-    utRegisterField("WhiteScore", &chBoards.WhiteScore, sizeof(uint32), UT_UINT, NULL);
-    utRegisterField("BlackScore", &chBoards.BlackScore, sizeof(uint32), UT_UINT, NULL);
+    utRegisterField("WhiteScore", &chBoards.WhiteScore, sizeof(int32), UT_INT, NULL);
+    utRegisterField("BlackScore", &chBoards.BlackScore, sizeof(int32), UT_INT, NULL);
     utRegisterField("FirstPiece", &chBoards.FirstPiece, sizeof(chPiece), UT_POINTER, "Piece");
     utRegisterField("LastPiece", &chBoards.LastPiece, sizeof(chPiece), UT_POINTER, "Piece");
     utRegisterClass("Piece", 9, &chRootData.usedPiece, &chRootData.allocatedPiece,

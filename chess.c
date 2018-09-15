@@ -41,16 +41,6 @@ static inline char *getPieceTypeName(chPieceType type) {
     return 0;  // Dummy return.
 }
 
-// Reverse a move so we can undo moves.
-static inline chMove reverseMove(chMove move) {
-    chMove reversedMove;
-    reversedMove.fromRow = move.toRow;
-    reversedMove.fromCol = move.toCol;
-    reversedMove.toRow = move.fromRow;
-    reversedMove.toCol = move.fromCol;
-    return reversedMove;
-}
-
 // Return the piece at (row, col).  (0, 0) is bottome left.
 static inline chPiece getPieceAtPosition(chBoard board, uint8 row, uint8 col) {
     return chBoardGetiPosition(board, COLS*row + col);
@@ -830,14 +820,24 @@ static void letPlayerMove(chBoard board, bool playerWhite, uint32 difficulty) {
 }
 
 int main(int argc, char **argv) {
+    int xArg = 1;
     utStart();
     chDatabaseStart();
     bool playerWhite = true;
     bool autoPlay = false;
-    uint8 difficulty = 4;
-    int32 seed = 1;
-    if (argc == 2 && !strcmp(argv[1], "-a")) {
-        autoPlay = true;
+    uint8 difficulty = 5;
+    int32 seed = 2;
+    uint32 moveLimit = UINT32_MAX;
+    while (xArg < argc && argv[xArg][0] == '-') {
+        if (!strcmp(argv[xArg], "-a")) {
+            autoPlay = true;
+        } else if (!strcmp(argv[xArg], "-n")) {
+            xArg++;
+            if (xArg < argc) {
+                moveLimit = atoi(argv[xArg]);
+            }
+        }
+        xArg++;
     }
     if (!autoPlay) {
         seed = atoi(readline("Enter a game seed as an integer: "));
@@ -861,7 +861,8 @@ int main(int argc, char **argv) {
     printBoard(board);
     bool playersTurn = playerWhite;
     uint32 initialMovesEvaluated = 0;
-    while (!gameOver(board)) {
+    uint32 numMoves = 0;
+    while (!gameOver(board) && numMoves < moveLimit) {
         verifyScore(board);
         uint32 movesEvaluated;
         if (playersTurn) {
@@ -889,6 +890,7 @@ int main(int argc, char **argv) {
                 chBoardGetBlackScore(board) - chBoardGetWhiteScore(board);
         printf("Score = %.3f\n", 0.001*score);
         fflush(stdout);
+        numMoves++;
     }
     if (!playersTurn) {
         printf("You win!\n");

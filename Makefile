@@ -1,6 +1,10 @@
+#CFLAGS=-O3 -Wall -std=c11 -fsanitize-undefined-trap-on-error -fsanitize=signed-integer-overflow,unsigned-integer-overflow
+CFLAGS=-O3 -Wall -std=c11
+CC=clang
+
 chess: chess.c chdatabase.c chdatabase.h
-	#gcc -g -Wall -std=c11 -DDD_DEBUG -o chess chess.c chdatabase.c -lreadline -lddutil-dbg
-	gcc -O3 -Wall -std=c11 -o chess chess.c chdatabase.c -lreadline -lddutil
+	#gcc $(CFLAGS) -DDD_DEBUG -o chess chess.c chdatabase.c -lreadline -lddutil-dbg
+	$(CC) $(CFLAGS) -o chess chess.c chdatabase.c -lreadline -lddutil
 
 chdatabase.c: chdatabase.h
 

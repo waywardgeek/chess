@@ -20,8 +20,8 @@ class Board create_only
     uint32 moveStackPos
     array chUndoMove undoMove
     uint32 undoMovePos
-    uint32 whiteScore
-    uint32 blackScore
+    int32 whiteScore
+    int32 blackScore
 
 class Piece create_only
     PieceType type
