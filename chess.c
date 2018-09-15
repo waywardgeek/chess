@@ -829,25 +829,34 @@ static void letPlayerMove(chBoard board, bool playerWhite, uint32 difficulty) {
     makeMove(board, move);
 }
 
-int main() {
+int main(int argc, char **argv) {
     utStart();
     chDatabaseStart();
-    int32 seed = atoi(readline("Enter a game seed as an integer: "));
-    srand(seed);
-    char* response = readline("How many moves ahead should the computer look? ");
-    uint8 difficulty = atoi(response);
-    response = readline("Would you prefer to play white (enter 'a' for auto-play)? (y/n/a) ");
-    while (*response != 'y' && *response != 'n' && *response != 'a') {
-        response = readline("Only y and n are allowed.  Whould you like to play white? (y/n) ");
-    }
     bool playerWhite = true;
     bool autoPlay = false;
-   if (*response == 'n') {
-       playerWhite = false;
-   } else if (*response == 'a') {
-       printf("You selected automatic play\n");
-       autoPlay = true;
-   }
+    uint8 difficulty = 4;
+    int32 seed = 1;
+    if (argc == 2 && !strcmp(argv[1], "-a")) {
+        autoPlay = true;
+    }
+    if (!autoPlay) {
+        seed = atoi(readline("Enter a game seed as an integer: "));
+    }
+    srand(seed);
+    if (!autoPlay) {
+        char* response = readline("How many moves ahead should the computer look? ");
+        difficulty = atoi(response);
+        response = readline("Would you prefer to play white (enter 'a' for auto-play)? (y/n/a) ");
+        while (*response != 'y' && *response != 'n' && *response != 'a') {
+            response = readline("Only y and n are allowed.  Whould you like to play white? (y/n) ");
+        }
+        if (*response == 'n') {
+            playerWhite = false;
+        } else if (*response == 'a') {
+            printf("You selected automatic play\n");
+            autoPlay = true;
+        }
+    }
     chBoard board = chBoardCreate(playerWhite);
     printBoard(board);
     bool playersTurn = playerWhite;
